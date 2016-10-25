@@ -138,10 +138,10 @@ get_gamedir(enum game_dirs dirtype, char *buf)
         subdir = "log/";
         break;
     case DUMP_DIR:
-        subdir = "dumps/";
+        subdir = "dumplog/";
         break;
     case TILESET_DIR:
-        subdir = "tilesets/";
+        subdir = "";
         break;
     default:
         return FALSE;
@@ -323,6 +323,7 @@ game_ended(int status, fnchar *filename, nh_bool net)
 
     /* don't care about errors: rename is nice to have, not essential */
     rename(filename, logname);
+    chmod(logname, 0644);
 #else
     bp = wcsrchr(filename, L'\\');
     get_gamedir(SAVE_DIR, savedir);
@@ -504,9 +505,11 @@ rungame(nh_bool net)
     /* Create the game, then immediately load it. */
     ret = ERR_CREATE_FAILED;
     if (net) {
+#ifdef NETCLIENT
         fd = nhnet_create_game(new_opts);
         if (fd >= 0)
             ret = playgame(fd, FM_PLAY);
+#endif
     } else {
         if (nh_create_game(fd, new_opts) == NHCREATE_OK)
             ret = playgame(fd, FM_PLAY);

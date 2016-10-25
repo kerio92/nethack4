@@ -60,7 +60,6 @@ static const struct nh_enum_option movecommand_spec =
 static const struct nh_listitem mode_list[] = {
     {MODE_NORMAL, "normal"},
     {MODE_EXPLORE, "explore"},
-    {MODE_WIZARD, "debug"}
 };
 static const struct nh_enum_option mode_spec =
     { mode_list, listlen(mode_list) };

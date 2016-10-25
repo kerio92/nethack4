@@ -158,7 +158,7 @@ static struct nh_option_desc curses_options[] = {
     {"optstyle", "option menu display style",
      nh_birth_ingame, OPTTYPE_ENUM, {.e = OPTSTYLE_FULL}},
     {"palette", "color palette used for text",
-     nh_birth_ingame, OPTTYPE_ENUM, {.e = PALETTE_DEFAULT}},
+     nh_birth_ingame, OPTTYPE_ENUM, {.e = PALETTE_NONE}},
     {"prompt_inline", "place prompts in the message window",
      nh_birth_ingame, OPTTYPE_BOOL, {.b = FALSE}},
     {"scores_own", "show all your own scores in the list",
@@ -1406,6 +1406,9 @@ write_nh_config(void)
 
     if (get_config_name(filename, FALSE) &&
         (fp = open_config_file(filename))) {
+#ifdef UNIX
+        fchmod(fileno(fp), 0644);
+#endif
         write_config_options(fp, nh_options);
         fclose(fp);
     } else {
@@ -1427,6 +1430,9 @@ write_ui_config(void)
 
     if (get_config_name(filename, TRUE) &&
         (fp = open_config_file(filename))) {
+#ifdef UNIX
+        fchmod(fileno(fp), 0644);
+#endif
         write_config_options(fp, curses_options);
         fclose(fp);
     } else {
