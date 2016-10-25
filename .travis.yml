@@ -1,0 +1,7 @@
+language: c
+script: make install
+os: osx
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#nethack4"
